@@ -1,0 +1,49 @@
+@import url("./variables.scss");
+@import url("./fonts.scss");
+
+body {
+	margin: 0;
+	background: var(--body);
+	color: var(--text);
+	font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+	overflow-x: hidden;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+i {
+    font-size: 15px;
+}
+
+.mt-gap {
+  margin-top: var(--gap);
+}
+
+.mb-gap {
+  margin-bottom: var(--gap);
+}
+
+button, input {
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--placeholder);
+  opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--placeholder);
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--placeholder);
+}
