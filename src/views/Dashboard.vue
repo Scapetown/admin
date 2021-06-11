@@ -1,4 +1,5 @@
 <template>
+  <Header></Header>
   <Container>
     <ColumnLayout>
       <Column>
@@ -17,6 +18,7 @@
 import { defineComponent } from "vue";
 import config from "@/config/config";
 import io from "socket.io-client";
+import Header from "@/components/layout/Header.vue";
 import Container from "@/components/layout/Container.vue";
 import ColumnLayout from "@/components/layout/ColumnLayout.vue";
 import Column from "@/components/layout/Column.vue";
@@ -26,6 +28,7 @@ import Card from "@/components/layout/Card.vue";
 export default defineComponent({
   name: "Dashboard",
   components: {
+    Header,
     Container,
     ColumnLayout,
     Column,
