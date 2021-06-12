@@ -3,13 +3,18 @@
   <Container>
     <ColumnLayout>
       <Column>
-        <Button @click="createGame" :isLoading="isLoading">Create game</Button>
+        <ListLayout>
+          <Button @click="createGame" :isLoading="isLoading"
+            >Create game</Button
+          >
+          <Card>
+            {{ remaining }}
+          </Card>
+        </ListLayout>
       </Column>
       <Column>
-        <Card>
-          {{ remaining }}
-        </Card>
-      </Column>
+        <Input placeholder="Give a hint" @input="submitHint"></Input
+      ></Column>
     </ColumnLayout>
   </Container>
 </template>
@@ -21,9 +26,11 @@ import io from "socket.io-client";
 import Header from "@/components/layout/Header.vue";
 import Container from "@/components/layout/Container.vue";
 import ColumnLayout from "@/components/layout/ColumnLayout.vue";
+import ListLayout from "@/components/layout/ListLayout.vue";
 import Column from "@/components/layout/Column.vue";
 import Button from "@/components/base/Button.vue";
 import Card from "@/components/layout/Card.vue";
+import Input from "@/components/base/Input.vue";
 
 export default defineComponent({
   name: "Dashboard",
@@ -31,9 +38,11 @@ export default defineComponent({
     Header,
     Container,
     ColumnLayout,
+    ListLayout,
     Column,
     Button,
     Card,
+    Input,
   },
   data() {
     return {
@@ -63,6 +72,25 @@ export default defineComponent({
           this.remaining = new Date(data * 1000).toISOString().substr(11, 8); //format seconds to hh:mm:ss string
         });
       });
+    },
+    async submitHint(message: string) {
+      this.isLoading = true;
+
+      const response = await fetch(`${config.server.url}/admin/hint`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          body: message,
+        }),
+      });
+
+      if (response.ok) {
+        this.isLoading = false;
+        const json = await response.json();
+        console.log(json);
+      }
     },
   },
   created() {
