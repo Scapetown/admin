@@ -8,16 +8,44 @@
             >Create game</Button
           >
           <Card>
-            {{ remaining }}
+            <h1 class="countdown">{{ remaining }}</h1>
           </Card>
         </ListLayout>
       </Column>
       <Column>
-        <Input placeholder="Give a hint" @input="submitHint"></Input
-      ></Column>
+        <ListLayout>
+          <Input placeholder="Give a hint" @input="submitHint"></Input>
+          <Button @click="createGame" :isLoading="isLoading">Close door</Button>
+        </ListLayout>
+      </Column>
     </ColumnLayout>
+    <Card class="mt-gap log-card">
+      <div class="logs">
+        <code class="code" v-for="(log, index) in logs" :key="index"
+          ><span class="timestamp">[{{ log.timestamp }}]</span>
+          {{ log.message }}</code
+        >
+      </div>
+    </Card>
   </Container>
 </template>
+
+<style lang="scss" scoped>
+.countdown {
+  text-align: center;
+}
+
+.log-card {
+  .logs {
+    display: flex;
+    flex-direction: column;
+
+    .timestamp {
+      color: #0096ff;
+    }
+  }
+}
+</style>
 
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -48,6 +76,7 @@ export default defineComponent({
     return {
       isLoading: false,
       remaining: null as unknown,
+      logs: [] as Array<any>,
     };
   },
   methods: {
@@ -63,13 +92,18 @@ export default defineComponent({
         console.log(json);
       }
     },
-    getRemaining() {
+    getSocket() {
       const socket = io(config.wss.url);
       this.remaining = "Currently there's no gaming running";
 
       socket.on("connect", () => {
         socket.on("remaining", ({ data }: any) => {
           this.remaining = new Date(data * 1000).toISOString().substr(11, 8); //format seconds to hh:mm:ss string
+        });
+
+        socket.on("logs", ({ data }: any) => {
+          this.logs.push(data);
+          this.logs.reverse();
         });
       });
     },
@@ -94,7 +128,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.getRemaining();
+    this.getSocket();
   },
 });
 </script>
