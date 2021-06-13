@@ -15,7 +15,7 @@
       <Column>
         <ListLayout>
           <Input placeholder="Give a hint" @input="submitHint"></Input>
-          <Button @click="createGame" :isLoading="isLoading">Close door</Button>
+          <Button @click="openDoor" :isLoading="isLoading">Open door</Button>
         </ListLayout>
       </Column>
     </ColumnLayout>
@@ -125,6 +125,12 @@ export default defineComponent({
         const json = await response.json();
         console.log(json);
       }
+    },
+    async openDoor() {
+      console.log("eyy");
+      await fetch(`${config.server.url}/admin/open`, {
+        method: "POST",
+      });
     },
   },
   created() {
