@@ -10,7 +10,6 @@
   min-height: 50px;
   border-radius: var(--border-radius);
   background-color: var(--secundair);
-  padding: 10px 25px;
-  text-align: center;
+  padding: 25px;
 }
 </style>
