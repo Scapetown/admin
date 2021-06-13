@@ -23,7 +23,7 @@
     <Card class="mt-gap log-card">
       <Icon :icon="['fas', 'trash-alt']" @click="deleteLogs" />
       <div class="logs mt-gap" v-if="logs.length > 1">
-        <p class="code" v-for="(log, index) in logs.reverse()" :key="index">
+        <p class="code" v-for="(log, index) in logs" :key="index">
           <span class="timestamp">[{{ log.timestamp }}]</span> {{ log.message }}
         </p>
       </div>
@@ -106,7 +106,7 @@ export default defineComponent({
 
         socket.on("logs", ({ data }: any) => {
           console.log(data);
-          this.logs.push(data);
+          this.logs.unshift(data);
         });
       });
     },
